@@ -7,7 +7,7 @@ import { apiRequest, sessionStore } from "./api.js";
 const AuthContext = createContext(null);
 
 async function readResponse(response) {
-  const body = response.status === 204 ? null : await response.json().catch(() => null);
+  const body = response.status === 204 ? null : await response.json();
   if (!response.ok) {
     throw new Error(body?.error || "Something went wrong. Please try again.");
   }
@@ -64,7 +64,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(async () => {
-    const results = await Promise.allSettled([
+    const logoutTasks = await Promise.allSettled([
       apiRequest("/api/auth/logout", {
         method: "POST",
       }).then(readResponse),
@@ -72,7 +72,7 @@ export function AuthProvider({ children }) {
       sessionStore.clearSessionToken(),
     ]);
     setUser(null);
-    const failed = results.find((result) => result.status === "rejected");
+    const failed = logoutTasks.find((result) => result.status === "rejected");
     if (failed) throw failed.reason;
   }, []);
 

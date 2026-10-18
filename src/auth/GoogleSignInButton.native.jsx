@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import * as Google from "expo-auth-session/providers/google";
 import { GoogleAuthProvider, signInWithCredential } from "@firebase/auth";
 import { auth } from "../firebaseClient";
@@ -9,11 +9,9 @@ const googleClientIds = {
   iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || "missing.apps.googleusercontent.com",
   androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID || "missing.apps.googleusercontent.com",
 };
-const hasGoogleClientIds = [
-  process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
-  process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
-  process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
-].every(Boolean);
+const platformClientId = Platform.OS === "ios"
+  ? process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID
+  : process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;
 
 export default function GoogleSignInButton({ onToken, onError }) {
   const [loading, setLoading] = useState(false);
@@ -53,8 +51,8 @@ export default function GoogleSignInButton({ onToken, onError }) {
   }, [onError, onToken, response]);
 
   async function handlePress() {
-    if (!hasGoogleClientIds) {
-      onError("Add the web, iOS, and Android Google OAuth client IDs to your environment configuration.");
+    if (!platformClientId) {
+      onError(`Add EXPO_PUBLIC_GOOGLE_${Platform.OS.toUpperCase()}_CLIENT_ID to your environment configuration.`);
       return;
     }
     if (!request) return;

@@ -62,13 +62,13 @@ app.use((req, res, next) => {
 });
 app.use(express.json({ limit: "16kb" }));
 
-function signInSession(profile) {
-  const token = jwt.sign(
+function createSessionToken(profile) {
+  return jwt.sign(
     {
       email: profile.email,
       name: profile.name || "",
       picture: profile.picture || "",
-      role: "user",
+      role: profile.role || "user",
     },
     sessionSecret,
     {
@@ -79,8 +79,6 @@ function signInSession(profile) {
       audience,
     },
   );
-
-  return token;
 }
 
 function getFirebaseAdminAuth() {
@@ -211,7 +209,7 @@ app.post("/api/auth/firebase", async (req, res, next) => {
   }
 
   try {
-    const sessionToken = signInSession({ ...profile, sub: profile.uid, email, role: user.role });
+    const sessionToken = createSessionToken({ ...profile, sub: profile.uid, email, role: user.role });
     if (clientType === "web") {
       res.cookie(cookieName, sessionToken, {
         ...sessionCookieOptions,
@@ -260,8 +258,8 @@ app.use((error, _req, res, _next) => {
   res.status(500).json({ error: "Something went wrong. Please try again." });
 });
 
-app.listen(port, () => {
-  console.log(`HB+ Access server listening on http://0.0.0.0:${port}`);
+app.listen(port, apiHost, () => {
+  console.log(`HB+ Access server listening on http://${apiHost}:${port}`);
   console.log(
     skipEmailDomainCheck
       ? "Email domain restriction is disabled for local testing."
