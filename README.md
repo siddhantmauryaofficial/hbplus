@@ -62,4 +62,16 @@ npm start
 Set `NODE_ENV=production`, `FIREBASE_PROJECT_ID`, `MONGODB_URI`, and a unique `SESSION_SECRET` of at least 32 characters in the server environment. Supply Firebase Admin credentials using the hosting platform's application-default credentials or a server-only secret. Serve the app and API over HTTPS.
 
 Web uses an HttpOnly, SameSite session cookie. Native apps receive a signed session token and store it using platform secure storage. The API verifies Firebase tokens at sign-in, checks email verification and the configured domain, and supports bearer sessions for mobile requests. `SKIP_EMAIL_DOMAIN_CHECK=true` is honored only in non-production development.
+
+## Deploy to Netlify
+
+This project includes `netlify.toml`. Netlify runs the Expo web export, publishes `dist/`, and rewrites `/api/*` to a serverless function that wraps the existing Express API.
+
+1. Push this project to GitHub and import the repository in Netlify.
+2. In **Site configuration → Environment variables**, add server-only `FIREBASE_PROJECT_ID`, `FIREBASE_SERVICE_ACCOUNT_JSON`, `MONGODB_URI`, `MONGODB_DB_NAME`, `SESSION_SECRET`, and `ALLOWED_DOMAIN`. Set `NODE_ENV=production`; keep `SKIP_EMAIL_DOMAIN_CHECK` unset or `false`.
+3. Add the Netlify site hostname to Firebase Authentication's authorized domains and the OAuth web client's allowed JavaScript origins.
+4. Allow Atlas access from the network used by your Netlify Functions. If your Atlas network policy requires fixed outbound IPs, configure a Netlify plan/network setup that provides static egress; do not open Atlas to `0.0.0.0/0` as a permanent workaround.
+5. Deploy. Netlify will build with `npm run build`; API routes stay same-origin so the browser session cookie works.
+
+Do not add `MONGODB_URI`, Firebase Admin credentials, or `SESSION_SECRET` as `EXPO_PUBLIC_*` variables. Netlify's `EXPO_PUBLIC_API_URL=/` build setting points the web client at the same-origin API rewrite.
 # hbplus

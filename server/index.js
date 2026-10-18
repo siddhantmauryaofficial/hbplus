@@ -10,8 +10,6 @@ import jwt from "jsonwebtoken";
 import { saveUserProfile } from "./database.js";
 
 const app = express();
-const port = Number(process.env.PORT || 3001);
-const apiHost = process.env.API_HOST || "0.0.0.0";
 const isProduction = process.env.NODE_ENV === "production";
 const sessionSecret = process.env.SESSION_SECRET || (!isProduction ? crypto.randomBytes(32).toString("hex") : "");
 const allowedDomain = (process.env.ALLOWED_DOMAIN || "hbplus.fit").toLowerCase();
@@ -258,11 +256,4 @@ app.use((error, _req, res, _next) => {
   res.status(500).json({ error: "Something went wrong. Please try again." });
 });
 
-app.listen(port, apiHost, () => {
-  console.log(`HB+ Access server listening on http://${apiHost}:${port}`);
-  console.log(
-    skipEmailDomainCheck
-      ? "Email domain restriction is disabled for local testing."
-      : `Email domain restriction is enforced for @${allowedDomain}.`,
-  );
-});
+export { app };

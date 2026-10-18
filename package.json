@@ -11,11 +11,11 @@
     "dev": "concurrently -k \"npm:dev:native\" \"npm:dev:server\"",
     "dev:web": "expo start --web --port 8081",
     "dev:native": "expo start",
-    "dev:server": "node --watch server/index.js",
+    "dev:server": "node --watch server/start.js",
     "build": "expo export --platform web",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "start": "node server/index.js"
+    "start": "node server/start.js"
   },
   "dependencies": {
     "@firebase/app": "^0.16.2",
@@ -33,12 +33,14 @@
     "firebase-admin": "^13.8.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^7.7.0",
+    "nodemon": "^3.1.14",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-native": "0.88.0",
     "react-native-safe-area-context": "~5.10.1",
     "react-native-screens": "~4.30.0",
-    "react-native-web": "~0.21.4"
+    "react-native-web": "~0.21.4",
+    "serverless-http": "^4.0.0"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
