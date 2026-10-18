@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "HB+ Access",
+    "slug": "hbplus-access",
+    "scheme": "hbplusaccess",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
+    "ios": {
+      "bundleIdentifier": "fit.hbplus.access"
+    },
+    "android": {
+      "package": "fit.hbplus.access"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    }
+  }
+}

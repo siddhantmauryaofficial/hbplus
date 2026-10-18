@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.expo/
+web-build/
+android/
+ios/
+.env*
+!.env.example
+secrets/
+service-account*.json
+npm-debug.log*

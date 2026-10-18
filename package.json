@@ -1,0 +1,49 @@
+{
+  "name": "hbplus-access",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "expo-router/entry",
+  "engines": {
+    "node": ">=24.12.0"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:native\" \"npm:dev:server\"",
+    "dev:web": "expo start --web --port 8081",
+    "dev:native": "expo start",
+    "dev:server": "node --watch server/index.js",
+    "build": "expo export --platform web",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "@firebase/app": "^0.16.2",
+    "@firebase/auth": "^1.13.6",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "cookie": "^0.7.2",
+    "dotenv": "^16.4.7",
+    "expo": "~58.0.14",
+    "expo-auth-session": "~58.0.13",
+    "expo-linking": "~58.0.13",
+    "expo-router": "~58.0.23",
+    "expo-secure-store": "~58.0.2",
+    "expo-web-browser": "~58.0.6",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.8.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^7.7.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-safe-area-context": "~5.10.1",
+    "react-native-screens": "~4.30.0",
+    "react-native-web": "~0.21.4"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
+}
